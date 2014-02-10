@@ -1,0 +1,206 @@
+@import url('reset.css');
+/* General Demo Style */
+body{
+    font-family: 'Open Sans Condensed','Arial Narrow', serif;
+    background: url('../images/bgnoise_lg.jpg') 0 0  repeat;
+    font-weight: 400;
+    font-size: 15px;
+    color: #333;
+    -webkit-font-smoothing: antialiased;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    width:100%;
+    height:100%;
+    position:absolute;
+}
+a, a:hover, a:active, a:focus{
+    color: #555;
+    text-decoration: none;
+    outline: none;
+}
+
+.main{
+    width: 100%;
+    height:100%; 
+    margin: 0 auto;
+    position: relative;
+}
+.bb-custom-wrapper{
+    width:100%;
+    height:100%;
+    display: -webkit-box;
+    display: -moz-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+    -moz-box-pack:center;
+    -moz-box-align:center;
+    position: relative;
+}
+
+/* Content Flip Style */
+.bb-bookblock {
+    /*width: 100%;
+    height: 100%;*/
+    width:1024px;
+    height:768px;
+    position: relative;
+    background: #fff;
+    z-index: 100;
+    border-radius:2px;
+}
+
+.bb-page {
+    width: 50%;
+    height: 100%;
+    left: 50%;
+    position: absolute;
+
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+
+    -webkit-transform-origin: left center;
+    -moz-transform-origin: left center;
+    -o-transform-origin: left center;
+    -ms-transform-origin: left center;
+    transform-origin: left center;
+}
+
+.bb-page > div,
+.bb-outer,
+.bb-content {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.bb-content {
+    background: #fff;
+}
+
+.bb-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.bb-overlay, .bb-outer {
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -o-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.bb-page > div {
+    width: 100%;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -o-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.bb-back {
+    -webkit-transform: rotateY(-180deg);
+    -moz-transform: rotateY(-180deg);
+    -o-transform: rotateY(-180deg);
+    -ms-transform: rotateY(-180deg);
+    transform: rotateY(-180deg);
+}
+
+.bb-outer {
+    width: 100%;
+    overflow: hidden;
+    z-index: 999;
+}
+
+.bb-overlay, 
+.bb-flipoverlay {
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.bb-flipoverlay {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.bb-bookblock > div.bb-page:first-child,
+.bb-bookblock > div.bb-page:first-child .bb-back {
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg);
+    -ms-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+}
+
+.bb-item {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    border-radius:4px;
+}
+
+.bb-item img{
+    width:100%;
+    height:100%;
+    border-radius:4px;
+}
+
+.bb-custom-wrapper .prev,.bb-custom-wrapper .next{
+    width:59px;
+    height:100%;
+    display: -webkit-box;
+    display: -moz-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+    -moz-box-pack:center;
+    -moz-box-align:center;
+    position: relative;
+}
+
+.bb-custom-wrapper .prev a{
+    display:block;
+    background:rgba(0,0,0,0.4) url('../images/prev.png') 0 0 no-repeat;
+    background-size:contain;
+    width:40px;
+    height:79px;
+    border-radius:3px;
+}
+.bb-custom-wrapper .prev a:hover{
+    background:rgba(0,0,0,0.3) url('../images/prev.png') 0 0 no-repeat;
+     background-size:contain;
+}
+.bb-custom-wrapper .next a{
+     display:block;
+    background:rgba(0,0,0,0.4) url('../images/next.png') 0 0 no-repeat;
+    background-size:contain;
+    width:40px;
+    height:79px;
+    border-radius:3px;
+}
+.bb-custom-wrapper .next a:hover{
+    background:rgba(0,0,0,0.3) url('../images/next.png') 0 0 no-repeat;
+     background-size:contain;
+}
+::-webkit-scrollbar { width: 4px;}
+::-webkit-scrollbar-track { background: rgba(0,0,0,0);}
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.5); border-radius: 2px;}
+::-webkit-scrollbar-thumb:window-inactive { }
