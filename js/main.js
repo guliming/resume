@@ -7,15 +7,15 @@ $(function() {
         window.scrollTo(0, 1);
     }, 1);
     
-    var bb,$navNext,$navPrev,
+    var bb,navNext,navPrev,
         init = function() {
 			initplugin();
             initEvents();
             
         },
         initplugin = function() {
-        	$navNext = $( '#bb-nav-next' );
-        	$navPrev = $( '#bb-nav-prev' );
+        	navNext = document.getElementById('bb-nav-next');
+        	navPrev = document.getElementById('bb-nav-prev');
         	bb = $( '#bb-bookblock' ).bookblock( {
                 speed : 500,
                 shadowSides : 0.8,
@@ -25,15 +25,14 @@ $(function() {
         initEvents = function() {
 
             // add navigation events
-            $navNext.on( 'click', function() {
+            evts.addEvent(navNext,'click', function(e){
+            	evts.stopEvent(e);
                 bb.next();
-                return false;
-            } );
-
-            $navPrev.on( 'click', function() {                
+            });
+            evts.addEvent(navPrev,'click', function(e){
+            	evts.stopEvent(e);
                 bb.prev();
-                return false;
-            } );
+            });
             
             var mygesture = testgesture($('#bb-bookblock')[0]);
 		    mygesture.touchEnd(function(x,data){

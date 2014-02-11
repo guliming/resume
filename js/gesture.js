@@ -1,302 +1,303 @@
 /**
  * @author liming17
  */
-var testgesture = function(targetObj){
-	var util = {
-		'query2json': function(query){
-			var rs = {};
-			var pairs = query.split('&');
-			for(var i=0; i<pairs.length; i++){
-				var kv = pairs[i].split('=');
-				if(kv.length>1){
-					if(rs[kv[0]]){
-						rs[kv[0]] = [].concat(rs[kv[0]]);
-						rs[kv[0]].push(kv[1]);
-					}
-					else{
-						rs[kv[0]] = kv[1];
-					}
-				}
-			}
-			return rs;
-		},
-		'isEmpty': function(o){
-			for(var k in o){
-				if(o.hasOwnProperty(k)){
-					return false;
-				}
-			}
-			return true;
-		},
-		'getTime': function(){
-			return Date.now() || new Date().getTime();
-		},
-		'isTouch' : function(){
-			return window.hasOwnProperty('ontouchstart');
-		},
-		'hasGesture': function(){
-			return window.hasOwnProperty('ongesturestart');
-		},
-		'clone': function(jsonObj){
-			var buf;
-			if (jsonObj instanceof Array) {
-				buf = [];
-				var i = jsonObj.length;
-				while (i--) {
-					buf[i] = util.clone(jsonObj[i]);
-				}
-				return buf;
-			} else if (jsonObj instanceof Object) {
-				buf = {};
-				for (var k in jsonObj) {
-					buf[k] = util.clone(jsonObj[k]);
-				}
-				return buf;
-			} else {
-				return jsonObj;
-			}
-		},
-		'objLength': function(obj){
-			if(obj instanceof Object){
-				var num = 0;
-				for(var i in obj){
-					num++;
-				}
-				return num;
-			}
-		},
-		'getDistance': function(x1, y1, x2, y2){
-			return Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)); 
-		},
-		//使用screenXY来作为标点。(x1,y1)是起点，(x2,y2)是终点，与x正轴所成的角度，逆时针计算
-		'getAngle': function(x1, y1, x2, y2){
-			if(x1==x2 && y1==y2){
-				return;
-			}
-			var angle = Math.atan((y1-y2)/(x1-x2))*(180/Math.PI);
-			if(y1>y2){
-				if(x1<x2){
-					angle = -angle;
-				}
-				else if(x1>x2){
-					angle = 180-angle;
+var util = {
+	'query2json': function(query){
+		var rs = {};
+		var pairs = query.split('&');
+		for(var i=0; i<pairs.length; i++){
+			var kv = pairs[i].split('=');
+			if(kv.length>1){
+				if(rs[kv[0]]){
+					rs[kv[0]] = [].concat(rs[kv[0]]);
+					rs[kv[0]].push(kv[1]);
 				}
 				else{
-					angle = 90;
+					rs[kv[0]] = kv[1];
 				}
 			}
-			else if(y1<y2){
-				if(x1<x2){
-					angle = 360-angle;
-				}
-				else if(x1>x2){
-					angle = 180-angle;
-				}
-				else{
-					angle = 270;
-				}
-			}
-			else{
-				if(x1<x2){
-					angle = 0;
-				}
-				else if(x1>x2){
-					angle = 180;
-				}
-			}
-			return angle;
 		}
-	}
-	var evts = {
-		'addEvent' : function(el, type, fn){
-		    if (el == null) {
-		        return false;
-		    }
-		    if (typeof fn !== "function") {
-		        return false;
-		    }
-	        if (el.addEventListener) {
-	            el.addEventListener(type, fn, false);
-	        } else if (el.attachEvent) {
-	            el.attachEvent('on' + type, fn);
-	        } else {
-	            el['on' + type] = fn;
-	        }
-	        return true;
-		},
-		'removeEvent' : function(el, type, fn){
-			if (el == null) {
-	            return false;
-	        }
-	        if (typeof fn !== "function") {
-	            return false;
-	        }
-	        if (el.removeEventListener) {
-	            el.removeEventListener(type, fn, false);
-	        } else if (el.detachEvent) {
-	            el.detachEvent("on" + type, fn);
-	        }
-	        el['on' + type] = null;
-	        return true;
-		},
-		'stopEvent' : function(e){
-			e = e || window.event;
-			if (e.preventDefault) {
-				e.preventDefault();
-				e.stopPropagation();
-			} else {
-				e.cancelBubble = true;
-				e.returnValue = false;
-			}
-		},
-		'custEvent' : (function(){
-			var custEventCache = [];
-			
-			var findCacheObj = function(obj){
-				for(var i = 0; i< custEventCache.length; i++){
-					if(custEventCache[i].obj == obj){
-						return custEventCache[i];
-					}
-				}
+		return rs;
+	},
+	'isEmpty': function(o){
+		for(var k in o){
+			if(o.hasOwnProperty(k)){
 				return false;
 			}
-			
-			var findCacheFunc = function(obj, evtName){
+		}
+		return true;
+	},
+	'getTime': function(){
+		return Date.now() || new Date().getTime();
+	},
+	'isTouch' : function(){
+		return window.hasOwnProperty('ontouchstart');
+	},
+	'hasGesture': function(){
+		return window.hasOwnProperty('ongesturestart');
+	},
+	'clone': function(jsonObj){
+		var buf;
+		if (jsonObj instanceof Array) {
+			buf = [];
+			var i = jsonObj.length;
+			while (i--) {
+				buf[i] = util.clone(jsonObj[i]);
+			}
+			return buf;
+		} else if (jsonObj instanceof Object) {
+			buf = {};
+			for (var k in jsonObj) {
+				buf[k] = util.clone(jsonObj[k]);
+			}
+			return buf;
+		} else {
+			return jsonObj;
+		}
+	},
+	'objLength': function(obj){
+		if(obj instanceof Object){
+			var num = 0;
+			for(var i in obj){
+				num++;
+			}
+			return num;
+		}
+	},
+	'getDistance': function(x1, y1, x2, y2){
+		return Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)); 
+	},
+	//使用screenXY来作为标点。(x1,y1)是起点，(x2,y2)是终点，与x正轴所成的角度，逆时针计算
+	'getAngle': function(x1, y1, x2, y2){
+		if(x1==x2 && y1==y2){
+			return;
+		}
+		var angle = Math.atan((y1-y2)/(x1-x2))*(180/Math.PI);
+		if(y1>y2){
+			if(x1<x2){
+				angle = -angle;
+			}
+			else if(x1>x2){
+				angle = 180-angle;
+			}
+			else{
+				angle = 90;
+			}
+		}
+		else if(y1<y2){
+			if(x1<x2){
+				angle = 360-angle;
+			}
+			else if(x1>x2){
+				angle = 180-angle;
+			}
+			else{
+				angle = 270;
+			}
+		}
+		else{
+			if(x1<x2){
+				angle = 0;
+			}
+			else if(x1>x2){
+				angle = 180;
+			}
+		}
+		return angle;
+	}
+}
+var evts = {
+	'addEvent' : function(el, type, fn){
+	    if (el == null) {
+	        return false;
+	    }
+	    if (typeof fn !== "function") {
+	        return false;
+	    }
+        if (el.addEventListener) {
+            el.addEventListener(type, fn, false);
+        } else if (el.attachEvent) {
+            el.attachEvent('on' + type, fn);
+        } else {
+            el['on' + type] = fn;
+        }
+        return true;
+	},
+	'removeEvent' : function(el, type, fn){
+		if (el == null) {
+            return false;
+        }
+        if (typeof fn !== "function") {
+            return false;
+        }
+        if (el.removeEventListener) {
+            el.removeEventListener(type, fn, false);
+        } else if (el.detachEvent) {
+            el.detachEvent("on" + type, fn);
+        }
+        el['on' + type] = null;
+        return true;
+	},
+	'stopEvent' : function(e){
+		e = e || window.event;
+		if (e.preventDefault) {
+			e.preventDefault();
+			e.stopPropagation();
+		} else {
+			e.cancelBubble = true;
+			e.returnValue = false;
+		}
+	},
+	'custEvent' : (function(){
+		var custEventCache = [];
+		
+		var findCacheObj = function(obj){
+			for(var i = 0; i< custEventCache.length; i++){
+				if(custEventCache[i].obj == obj){
+					return custEventCache[i];
+				}
+			}
+			return false;
+		}
+		
+		var findCacheFunc = function(obj, evtName){
+			var _obj = findCacheObj(obj);
+			if(!(evtName in _obj.func)){
+				_obj.func[evtName] = [];
+			}
+			return _obj.func[evtName];
+		}
+		
+		var that = {
+			'define' : function(obj, evtList){
+				evtList = [].concat(evtList);
 				var _obj = findCacheObj(obj);
-				if(!(evtName in _obj.func)){
-					_obj.func[evtName] = [];
+				if(_obj){
+					for(var i = 0; i< evtList.length; i++){
+						if(!(evtList[i] in _obj.func)){
+							_obj.func[evtList[i]] = [];
+						}
+						else{
+							//已经注册该事件
+						}
+					}
 				}
-				return _obj.func[evtName];
-			}
-			
-			var that = {
-				'define' : function(obj, evtList){
-					evtList = [].concat(evtList);
-					var _obj = findCacheObj(obj);
-					if(_obj){
-						for(var i = 0; i< evtList.length; i++){
-							if(!(evtList[i] in _obj.func)){
-								_obj.func[evtList[i]] = [];
-							}
-							else{
-								//已经注册该事件
-							}
+				else{
+					var custObj = {
+						'obj' : obj,
+						'func' : {
+							
 						}
-					}
-					else{
-						var custObj = {
-							'obj' : obj,
-							'func' : {
-								
-							}
-						};
-						for(var i = 0; i< evtList.length; i++){
-							custObj.func[evtList[i]] = [];
-						}
-						custEventCache.push(custObj);
-					}
-				},
-				'undefine' : function(obj, evtList){
-					evtList = [].concat(evtList);
-					var _obj = findCacheObj(obj);
-					for(var i= 0; i< evtList.length; i++){
-						if(evtList[i] in _obj.func){
-							delete _obj.func[evtList[i]];
-						}
-					}
-					// 全部undefine后清除该obj
-					// if(util.isEmpty(_obj.func)){
-// 						
-					// }
-				},
-				'add' : function(obj, evtName, fn, defaultData, once){
-					var func = findCacheFunc(obj, evtName);
-					var funcObj = {
-						'fn': fn,
-						'defaultData': defaultData,
-						'once': once
 					};
-					func.push(funcObj);
-				},
-				'remove' : function(obj, evtName, fn){
-					var func = findCacheFunc(obj, evtName);
-					for(var i = 0; i< func.length; i++){
-						if(func[i].fn == fn){
-							func.splice(i,1);
-						}
+					for(var i = 0; i< evtList.length; i++){
+						custObj.func[evtList[i]] = [];
 					}
-				},
-				'fire' : function(obj, evtName, data, defaultFunc){
-					var func = findCacheFunc(obj, evtName);
-					for(var i = 0; i< func.length; i++){
-						var fn = func[i].fn;
-						fn.apply(obj, [{obj: obj, type: evtName, data: func[i].defaultData}].concat(data));
-						if(func[i].once){
-							func.splice(i,1);
-						}
-					}
-					defaultFunc && defaultFunc();
-				},
-				'getCache': function(){
-					return custEventCache;
+					custEventCache.push(custObj);
 				}
-			};
-			return that;
-		})(),
-		'delegatedEvent' : function(actEl,exptEls){
-			var evtList = {};
-			var that = {};
-			
-			var fireEvent = function(e){
-				var e = e || window.event;
-				var el = e.srcElement || e.target;
-				var type = e.type;
-				var name;
-				
-				while(el && el !== actEl){
-					if((name = el.getAttribute('action-type')) && evtList[type][name]){
-						var arg = {
-							'evt' : e,
-							'el' : el,
-							'box' : actEl,
-							'data' : util.query2json(el.getAttribute('action-data') || '')
-						}
-						//执行方法，如果返回false，则停止冒泡
-						var isbubble = true;
-						for(var i=0;i<evtList[type][name].length;i++){
-							isbubble = evtList[type][name][i](arg) & isbubble;
-						}
-						if(!isbubble){
-							break;
-						}
+			},
+			'undefine' : function(obj, evtList){
+				evtList = [].concat(evtList);
+				var _obj = findCacheObj(obj);
+				for(var i= 0; i< evtList.length; i++){
+					if(evtList[i] in _obj.func){
+						delete _obj.func[evtList[i]];
 					}
-					el = el.parentNode;	
+				}
+				// 全部undefine后清除该obj
+				// if(util.isEmpty(_obj.func)){
+// 						
+				// }
+			},
+			'add' : function(obj, evtName, fn, defaultData, once){
+				var func = findCacheFunc(obj, evtName);
+				var funcObj = {
+					'fn': fn,
+					'defaultData': defaultData,
+					'once': once
+				};
+				func.push(funcObj);
+			},
+			'remove' : function(obj, evtName, fn){
+				var func = findCacheFunc(obj, evtName);
+				for(var i = 0; i< func.length; i++){
+					if(func[i].fn == fn){
+						func.splice(i,1);
+					}
+				}
+			},
+			'fire' : function(obj, evtName, data, defaultFunc){
+				var func = findCacheFunc(obj, evtName);
+				for(var i = 0; i< func.length; i++){
+					var fn = func[i].fn;
+					fn.apply(obj, [{obj: obj, type: evtName, data: func[i].defaultData}].concat(data));
+					if(func[i].once){
+						func.splice(i,1);
+					}
+				}
+				defaultFunc && defaultFunc();
+			},
+			'getCache': function(){
+				return custEventCache;
+			}
+		};
+		return that;
+	})(),
+	'delegatedEvent' : function(actEl,exptEls){
+		var evtList = {};
+		var that = {};
+		
+		var fireEvent = function(e){
+			var e = e || window.event;
+			var el = e.srcElement || e.target;
+			var type = e.type;
+			var name;
+			
+			while(el && el !== actEl){
+				if((name = el.getAttribute('action-type')) && evtList[type][name]){
+					var arg = {
+						'evt' : e,
+						'el' : el,
+						'box' : actEl,
+						'data' : util.query2json(el.getAttribute('action-data') || '')
+					}
+					//执行方法，如果返回false，则停止冒泡
+					var isbubble = true;
+					for(var i=0;i<evtList[type][name].length;i++){
+						isbubble = evtList[type][name][i](arg) & isbubble;
+					}
+					if(!isbubble){
+						break;
+					}
+				}
+				el = el.parentNode;	
+			}
+		}
+		
+		that.add = function(name, type, func){
+			if(!evtList[type]){
+				if(evts.addEvent(actEl, type, fireEvent)){
+					evtList[type] = {};
+					evtList[type][name] = [];
 				}
 			}
-			
-			that.add = function(name, type, func){
-				if(!evtList[type]){
-					if(evts.addEvent(actEl, type, fireEvent)){
-						evtList[type] = {};
-						evtList[type][name] = [];
-					}
-				}
-				evtList[type][name].push(func);
-			}
-			
-			that.remove = function(name, type, func){
-				if(evtList[type]){
-					delete evtList[type][funcName];
-					if(util.isEmpty(evtList[type])){
-						delete evtList[type];
-						evts.removeEvent(actEl, type, fireEvent);
-					}
+			evtList[type][name].push(func);
+		}
+		
+		that.remove = function(name, type, func){
+			if(evtList[type]){
+				delete evtList[type][funcName];
+				if(util.isEmpty(evtList[type])){
+					delete evtList[type];
+					evts.removeEvent(actEl, type, fireEvent);
 				}
 			}
-			
-			return that;
-		},
-	};
+		}
+		
+		return that;
+	},
+};
+
+var testgesture = function(targetObj){
 	
 	var istouch = util.isTouch();
 	var hasgesture = util.hasGesture();
@@ -584,6 +585,8 @@ var testgesture = function(targetObj){
 	};
 	
 	it.init();
+	
+	
 	
 	return main;
 };
