@@ -16,7 +16,7 @@ var canvas = (function(){
 	var step = 0;
 	var isWorking = false;
 	
-	var experence = ['啊啊啊哈哈哈1','哈哈哈哈哈啊啊啊2'];
+	var experence = ['大四：去往上海','群硕软件','大四：回到杭州','浙大网新','硕士：去往浙大','杭州思科','正式工作：去往北京','新浪微博'];
 	var temp = [];
 	
 	var walkimgs = [];
