@@ -57,9 +57,9 @@ var canvas = (function(){
 			return;
 		}
 		//路上512，工作1024
-		if(time>512*12){
+		if(time>512*15){
 			time=x=y=0;
-			return;
+			//return;
 		}
 		
 		time++;x++;y++;
