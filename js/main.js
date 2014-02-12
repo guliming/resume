@@ -23,6 +23,17 @@ $(function() {
            } );
         },
         initEvents = function() {
+        	
+        	evts.custEvent.define(bb, 'animationEnd');
+        	
+        	evts.custEvent.add(bb, 'animationEnd', function(x,data){
+        		if(data[0].id == 'third'){
+        			evts.custEvent.fire(canvas, 'pause', false);
+        			canvas();
+        		}
+        		else
+        			evts.custEvent.fire(canvas, 'pause', true);
+        	});
 
             // add navigation events
             evts.addEvent(navNext,'click', function(e){

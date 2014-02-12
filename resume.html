@@ -19,29 +19,19 @@
                     <a href="javascript:void(0)" id="bb-nav-prev"></a>
                 </div>
                 <div id="bb-bookblock" class="bb-bookblock" style="-webkit-perspective: 1300px;">
-                    <div class="bb-item" style="display: block;">
-                        <table>
-                        	<tr>
-                        		<td>姓名</td>
-                        		<td>1</td>
-                        		<td>性别</td>
-                        		<td>2</td>
-                        	</tr>
-                        </table>
+                    <div class="bb-item" style="display: block;" id="first">
+                    	<div style="width: 100%;height: 100%;text-align:center;position: absolute;top: 50%;margin-left:auto; margin-right:auto;">
+                    		XXX
+                    	</div>
+                        
                     </div>
-                    <div class="bb-item" style="display: none;">
+                    <div class="bb-item" style="display: none;" id="second">
                         <div>
                         	<span>test</span>
                         </div>
                     </div>
-                    <div class="bb-item" style="display: none;">
-                        <img src="./images/3_H.jpg" alt="image03">
-                    </div>
-                    <div class="bb-item" style="display: none;">
-                        <img src="./images/4_H.jpg" alt="image04">
-                    </div>
-                     <div class="bb-item" style="display: none;">
-                        <img src="./images/5_H.jpg" alt="image04">
+                    <div class="bb-item" style="display: none;" id="third">
+                        <canvas id="canvas1" width="1024" height="758"></canvas>
                     </div>
                 </div>
                  <div class="next">
@@ -54,6 +44,7 @@
         <script type="text/javascript" src="./js/jquery.min.js"></script>
         <script type="text/javascript" src="./js/jquery.bookblock.js"></script>
         <script type="text/javascript" src="./js/gesture.js"></script>
+        <script type="text/javascript" src="./js/canvas.js"></script>
         <script type="text/javascript" src="./js/main.js"></script>
     
     

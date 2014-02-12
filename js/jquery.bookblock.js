@@ -316,9 +316,9 @@
 
 					// callback trigger
 					self.options.onEndFlip(self.previous, self.current, isLimit);
-
+					
+					evts.custEvent.fire(self, 'animationEnd', self.$nextItem);
 				}
-
 			});
 
 			if (dir === 'prev') {
