@@ -16,7 +16,7 @@ var canvas = (function(){
 	var step = 0;
 	var isWorking = false;
 	
-	var experence = ['啊啊啊哈哈哈','哈哈哈哈哈啊啊啊','33333','444444','55555','666666','777777','8888888','999999','0000000'];
+	var experence = ['啊啊啊哈哈哈1','哈哈哈哈哈啊啊啊2'];
 	var temp = [];
 	
 	var walkimgs = [];
@@ -56,11 +56,6 @@ var canvas = (function(){
 		if(isPause){
 			return;
 		}
-		//路上512，工作1024
-		if(time>512*15){
-			time=x=y=0;
-			//return;
-		}
 		
 		time++;x++;y++;
 		
@@ -75,7 +70,7 @@ var canvas = (function(){
 	};
 	
 	var drawCircle = function(){
-		if(time==0){
+		if(time==1){
 			mycontext.clearRect(0,0,1024,104);
 		}
 		if(!isPause){
@@ -130,6 +125,11 @@ var canvas = (function(){
 	var drawText = function(){
 		if(x==1){
 			var text = experence.shift();
+			if(!text){
+				experence = temp;
+				temp = [];
+				text = experence.shift();
+			}
 			temp.push(text);
 			
 			mycontext.clearRect(50,0,200,706);
